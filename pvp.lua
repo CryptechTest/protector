@@ -1,28 +1,27 @@
-
 local S = protector.intllib
 
 -- get static spawn position
 local statspawn = minetest.string_to_pos(minetest.settings:get("static_spawnpoint"))
-		or {x = 0, y = 2, z = 0}
+	or { x = 0, y = 2, z = 0 }
 
 -- is spawn protected
 local protector_spawn = tonumber(minetest.settings:get("protector_spawn")
-	or minetest.settings:get("protector_pvp_spawn")) or 0
+		or minetest.settings:get("protector_pvp_spawn")) or 0
+
+-- is spawn pvp protected
+local protector_pvp_spawn = protector_spawn and tonumber(minetest.settings:get("protector_pvp_spawn")) or 0
 
 -- is night-only pvp enabled
 local protector_night_pvp = minetest.settings:get_bool("protector_night_pvp")
 
 -- disables PVP in your own protected areas
 if minetest.settings:get_bool("enable_pvp")
-and minetest.settings:get_bool("protector_pvp") then
-
+	and minetest.settings:get_bool("protector_pvp") then
 	if minetest.register_on_punchplayer then
-
 		minetest.register_on_punchplayer(function(player, hitter,
-				time_from_last_punch, tool_capabilities, dir, damage)
-
+												  time_from_last_punch, tool_capabilities, dir, damage)
 			if not player
-			or not hitter then
+				or not hitter then
 				print("[MOD] Protector - on_punchplayer called with nil objects")
 			end
 
@@ -34,17 +33,18 @@ and minetest.settings:get_bool("protector_pvp") then
 			local pos = player:get_pos()
 
 			if pos.x < statspawn.x + protector_spawn
-			and pos.x > statspawn.x - protector_spawn
-			and pos.y < statspawn.y + protector_spawn
-			and pos.y > statspawn.y - protector_spawn
-			and pos.z < statspawn.z + protector_spawn
-			and pos.z > statspawn.z - protector_spawn then
+				and pos.x > statspawn.x - protector_spawn
+				and pos.y < statspawn.y + protector_spawn
+				and pos.y > statspawn.y - protector_spawn
+				and pos.z < statspawn.z + protector_spawn
+				and pos.z > statspawn.z - protector_spawn then
 				return true
+			elseif protector_pvp_spawn then
+				return false
 			end
 
 			-- do we enable pvp at night time only ?
 			if protector_night_pvp then
-
 				-- get time of day
 				local tod = minetest.get_timeofday() or 0
 
@@ -61,11 +61,9 @@ and minetest.settings:get_bool("protector_pvp") then
 			end
 
 			return false
-
 		end)
 	else
 		print("[MOD] Protector - pvp_protect not active, update your version of Minetest")
-
 	end
 else
 	print("[MOD] Protector - pvp_protect is disabled")
