@@ -303,7 +303,7 @@ protector.can_dig = function(r, pos, digger, onlyowner, infolevel)
 	local pos = minetest.find_nodes_in_area(
 		{x = pos.x - r, y = pos.y - r, z = pos.z - r},
 		{x = pos.x + r, y = pos.y + r, z = pos.z + r},
-		{"protector:protect", "protector:protect2", "protector:protect_hidden"})
+		{"protector:protect", "protector:protect2", "protector:protect_hidden", "group:protector"})
 
 	local meta, owner, members
 
@@ -485,7 +485,7 @@ minetest.register_node("protector:protect", {
 		"default_stone.png^protector_overlay.png^protector_logo.png"
 	},
 	sounds = default.node_sound_stone_defaults(),
-	groups = {dig_immediate = 2, unbreakable = 1},
+	groups = {dig_immediate = 2, unbreakable = 1, protector = 1},
 	is_ground_content = false,
 	paramtype = "light",
 	light_source = 4,
@@ -585,7 +585,7 @@ minetest.register_node("protector:protect2", {
 	wield_image = "protector_logo.png",
 	inventory_image = "protector_logo.png",
 	sounds = default.node_sound_stone_defaults(),
-	groups = {dig_immediate = 2, unbreakable = 1},
+	groups = {dig_immediate = 2, unbreakable = 1, protector = 1},
 	use_texture_alpha = "clip",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
