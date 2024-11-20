@@ -309,7 +309,8 @@ protector.can_dig = function(r, pos, digger, onlyowner, infolevel)
 
 	for n = 1, #pos do
 
-		local g = minetest.get_item_group(pos[n].name, "protector");
+		local node = minetest.get_node(pos[n])
+		local g = minetest.get_item_group(node.name, "protector");
 		if g ~= 2 then
 			return true
 		end
