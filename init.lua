@@ -309,6 +309,11 @@ protector.can_dig = function(r, pos, digger, onlyowner, infolevel)
 
 	for n = 1, #pos do
 
+		local g = minetest.get_item_group(pos[n].name, "protector");
+		if g ~= 2 then
+			return true
+		end
+
 		meta = minetest.get_meta(pos[n])
 		owner = meta:get_string("owner") or ""
 		members = meta:get_string("members") or ""
